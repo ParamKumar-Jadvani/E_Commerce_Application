@@ -5536,3 +5536,5 @@ List<Map> allProducts = [
         "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20Airpods/thumbnail.png"
   }
 ];
+
+List<Map> cartProduct =[];
