@@ -1,4 +1,6 @@
+import 'package:e_commerce_application/views/cartPage.dart';
 import 'package:e_commerce_application/views/homePage.dart';
+import 'package:e_commerce_application/views/productDetailedPage.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      // home: const HomePage(),
+      routes: {
+        '/': (context) => const HomePage(),
+        'ProductDetailPage': (context) => const Productdetailpage(),
+        'CartPage': (context) => const Cartpage(),
+      },
     );
   }
 }

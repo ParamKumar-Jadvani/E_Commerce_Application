@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Productdetailpage extends StatefulWidget {
-  final Map Product;
-  const Productdetailpage({super.key, required this.Product});
+  const Productdetailpage({super.key});
 
   @override
   State<Productdetailpage> createState() => _Productdetailpage();
@@ -11,17 +10,19 @@ class Productdetailpage extends StatefulWidget {
 class _Productdetailpage extends State<Productdetailpage> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Map Product = ModalRoute.of(context)?.settings.arguments as Map;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
           ),
         ),
-        title: Text('Product Detail'),
+        title: const Text('Product Detail'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,7 +31,7 @@ class _Productdetailpage extends State<Productdetailpage> {
           children: [
             Image(
               image: NetworkImage(
-                widget.Product['thumbnail'],
+                Product['thumbnail'],
               ),
             ),
             const SizedBox(height: 16.0),
@@ -38,7 +39,7 @@ class _Productdetailpage extends State<Productdetailpage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.Product['title'],
+                  Product['title'],
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
@@ -47,7 +48,7 @@ class _Productdetailpage extends State<Productdetailpage> {
                 const SizedBox(height: 8.0),
                 Text(
                   textAlign: TextAlign.start,
-                  "\$ ${widget.Product['price'].toString()}",
+                  "\$ ${Product['price'].toString()}",
                   style: TextStyle(
                     fontSize: 20.0,
                     color: Colors.green,
@@ -56,7 +57,7 @@ class _Productdetailpage extends State<Productdetailpage> {
                 ),
                 const SizedBox(height: 16.0),
                 Text(
-                  widget.Product['description'],
+                  Product['description'],
                   style: TextStyle(
                     fontSize: 16.0,
                   ),
