@@ -1,6 +1,6 @@
-import 'package:e_commerce_application/views/cartPage.dart';
-import 'package:e_commerce_application/views/homePage.dart';
-import 'package:e_commerce_application/views/productDetailedPage.dart';
+import 'package:e_commerce_application/views/cart_page.dart';
+import 'package:e_commerce_application/views/home_page.dart';
+import 'package:e_commerce_application/views/product_detailed_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
       // home: const HomePage(),
       routes: {
         '/': (context) => const HomePage(),
-        'ProductDetailPage': (context) => const Productdetailpage(),
-        'CartPage': (context) => const Cartpage(),
+        'ProductDetailPage': (context) => const ProductDetailPage(),
+        'CartPage': (context) => CartPage(),
       },
     );
   }

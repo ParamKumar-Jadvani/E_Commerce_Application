@@ -1,6 +1,8 @@
+import 'dart:math';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce_application/extensions.dart';
-import 'package:e_commerce_application/utils/utilsProduct.dart';
+import 'package:e_commerce_application/utils/utils_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -149,11 +151,20 @@ class _HomePageState extends State<HomePage> {
                                   padding: const EdgeInsets.all(4),
                                   margin:
                                       const EdgeInsets.fromLTRB(4, 10, 4, 0),
-                                  child: const Text(
-                                    'BUY NOW',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      cartProduct.add(elem);
+                                      print(cartProduct);
+                                      log(cartProduct as num);
+                                      Navigator.of(context)
+                                          .pushNamed('CartPage');
+                                    },
+                                    child: const Text(
+                                      'BUY NOW',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                   decoration: const BoxDecoration(

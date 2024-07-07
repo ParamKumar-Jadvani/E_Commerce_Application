@@ -3,14 +3,16 @@ import 'package:e_commerce_application/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class Productdetailpage extends StatefulWidget {
-  const Productdetailpage({Key? key}) : super(key: key);
+import '../utils/utils_product.dart';
+
+class ProductDetailPage extends StatefulWidget {
+  const ProductDetailPage({Key? key}) : super(key: key);
 
   @override
-  State<Productdetailpage> createState() => _Productdetailpage();
+  State<ProductDetailPage> createState() => _Productdetailpage();
 }
 
-class _Productdetailpage extends State<Productdetailpage> {
+class _Productdetailpage extends State<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -18,6 +20,7 @@ class _Productdetailpage extends State<Productdetailpage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -28,6 +31,7 @@ class _Productdetailpage extends State<Productdetailpage> {
         ),
         title: const Text('Product Detail'),
       ),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -134,8 +138,15 @@ class _Productdetailpage extends State<Productdetailpage> {
                   16.toHeight(),
                   ElevatedButton(
                     onPressed: () {
-                      // Assuming `cartProduct` is defined and accessible
-                      // cartProduct.add(Product);
+                      cartProduct.add(Product);
+                      Navigator.of(context).pushNamed(
+                          'CartPage'); // Add the product to the cart list
+                      print(cartProduct); // Print the cart list to the console
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('${Product['title']} added to cart!'),
+                        ),
+                      );
                     },
                     child: const Text('Add to Cart'),
                   ),
