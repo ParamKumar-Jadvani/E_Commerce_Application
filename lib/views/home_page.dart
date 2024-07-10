@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce_application/extensions.dart';
 import 'package:e_commerce_application/utils/utils_product.dart';
@@ -21,15 +19,29 @@ class _HomePageState extends State<HomePage> {
     'https://emeritus.org/in/wp-content/uploads/sites/3/2024/01/Featured-Images-for-Global-10-1024x536.png'
   ];
 
+  String selectedCategory = 'All';
+
+  // List<Map<String, dynamic>> getFilteredProducts() {
+  //   if (selectedCategory == 'All') {
+  //     return allProducts;
+  //   } else {
+  //     return allProducts
+  //         .where((product) => product['category'] == selectedCategory)
+  //         .toList();
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
+        backgroundColor: Colors.white,
       ),
+      backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,15 +57,6 @@ class _HomePageState extends State<HomePage> {
                   builder: (BuildContext context) {
                     return Container(
                       alignment: Alignment.center,
-                      // child: const Text(
-                      //   textAlign: TextAlign.center,
-                      //   'My name Is Product',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 20,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
                       margin: const EdgeInsets.only(right: 8),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black26),
@@ -70,6 +73,59 @@ class _HomePageState extends State<HomePage> {
             ),
             20.toHeight(),
             const Text(
+              'Filters',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            10.toHeight(),
+            Row(
+              children: [
+                DropdownButton(
+                  value: selectedCategory,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.black),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.black,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value.toString();
+                    });
+                  },
+                  items: [
+                    const DropdownMenuItem(
+                      child: Text('All Products'),
+                      value: 'All',
+                    ),
+                    ...categories.map((elem) {
+                      return DropdownMenuItem(
+                        child: Text(elem),
+                        value: elem,
+                      );
+                    }),
+                  ],
+                ),
+                30.toWidth(),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {});
+                    },
+                    child: const Text(
+                      'Apply Filters',
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ],
+            ),
+            20.toHeight(),
+            const Text(
               'Products',
               style: TextStyle(
                 fontSize: 20,
@@ -77,117 +133,104 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             10.toHeight(),
-            SizedBox(
-              height: size.height * 0.25,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: allProducts.map((elem) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed('ProductDetailPage', arguments: elem);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        padding: const EdgeInsets.all(5),
-                        width: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black26),
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white70,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade200,
-                              blurRadius: 10,
-                              offset: const Offset(5, 5),
+            Expanded(
+              child: GridView.builder(
+                itemCount: allProducts.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 0.75,
+                ),
+                itemBuilder: (context, index) {
+                  final elem = allProducts[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        'ProductDetailPage',
+                        arguments: elem,
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black26),
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white70,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade200,
+                            blurRadius: 10,
+                            offset: const Offset(5, 5),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Image.network(
+                              elem['thumbnail'],
+                              fit: BoxFit.cover,
                             ),
-                          ],
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height * 0.11,
-                              child: Image(
-                                image: NetworkImage(
-                                  elem['thumbnail'],
+                          ),
+                          10.toHeight(),
+                          Text(
+                            elem['title'],
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black87,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Text(
+                            '\$${elem['price']}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          RatingBar.builder(
+                            initialRating: elem['rating'].toDouble(),
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 17,
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {},
+                          ),
+                          10.toHeight(),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                cartProduct.add(elem);
+                              });
+                              Navigator.of(context).pushNamed('CartPage');
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.blueAccent,
+                              ),
+                              child: const Text(
+                                'BUY NOW',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                            10.toHeight(),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  elem['title'],
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black87,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                Text(
-                                  '\$${elem['price']}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                                RatingBar.builder(
-                                  initialRating: elem['rating'].toDouble(),
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: true,
-                                  itemCount: 5,
-                                  itemSize: 17,
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                  ),
-                                  onRatingUpdate: (rating) {},
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.all(4),
-                                  margin:
-                                      const EdgeInsets.fromLTRB(4, 10, 4, 0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      cartProduct.add(elem);
-                                      print(cartProduct);
-                                      log(cartProduct as num);
-                                      Navigator.of(context)
-                                          .pushNamed('CartPage');
-                                    },
-                                    child: const Text(
-                                      'BUY NOW',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                    color: Colors.blueAccent,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            10.toHeight(),
-            Expanded(
-              child: Container(
-                color: Colors.white,
+                    ),
+                  );
+                },
               ),
             ),
           ],
