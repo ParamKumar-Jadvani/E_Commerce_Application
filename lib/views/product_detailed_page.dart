@@ -27,52 +27,76 @@ class _Productdetailpage extends State<ProductDetailPage> {
           },
           icon: const Icon(
             Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,
           ),
         ),
-        title: const Text('Product Detail'),
+        title:
+            const Text('Product Detail', style: TextStyle(color: Colors.black)),
       ),
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: size.height * 0.25,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  viewportFraction: 1,
-                ),
-                items: Product['images'].map<Widget>((imageUrl) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.only(right: 8),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black26),
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: NetworkImage(imageUrl),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CarouselSlider(
+              options: CarouselOptions(
+                height: size.height * 0.4,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                viewportFraction: 1,
               ),
-              16.toHeight(),
-              Column(
+              items:
+                  (Product['images'] as List<dynamic>).map<Widget>((imageUrl) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: NetworkImage(imageUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+            16.toHeight(),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: Colors.grey.shade100,
+                ),
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromRGBO(9, 30, 66, 0.25),
+                    blurRadius: 8,
+                    spreadRadius: -2,
+                    offset: Offset(0, -3),
+                  ),
+                  BoxShadow(
+                    color: Color.fromRGBO(9, 30, 66, 0.08),
+                    blurRadius: 0,
+                    spreadRadius: 1,
+                    offset: Offset(0, -1),
+                  ),
+                ],
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     Product['title'],
                     style: const TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 28.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -133,22 +157,42 @@ class _Productdetailpage extends State<ProductDetailPage> {
                     Product['description'],
                     style: const TextStyle(
                       fontSize: 16.0,
+                      height: 1.5,
+                      color: Colors.grey,
                     ),
                   ),
                   16.toHeight(),
                   ElevatedButton(
                     onPressed: () {
-                      cartProduct.add(Product);
-                      Navigator.of(context).pushNamed(
-                          'CartPage'); // Add the product to the cart list
-                      print(cartProduct); // Print the cart list to the console
+                      if (!cartProduct.contains(Product)) {
+                        Product['qty'] = 1;
+                        cartProduct.add(Product);
+                      }
+                      Navigator.of(context).pushNamed('CartPage');
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('${Product['title']} added to cart!'),
                         ),
                       );
                     },
-                    child: const Text('Add to Cart'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                        horizontal: 24,
+                      ),
+                      backgroundColor: Colors.blueAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(27),
+                      ),
+                    ),
+                    child: const Text(
+                      'Add to Cart',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                   10.toHeight(),
                   const Text(
@@ -176,6 +220,7 @@ class _Productdetailpage extends State<ProductDetailPage> {
                             review['comment'],
                             style: const TextStyle(
                               fontSize: 14,
+                              color: Colors.black87,
                             ),
                           ),
                           Text(
@@ -191,8 +236,8 @@ class _Productdetailpage extends State<ProductDetailPage> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
