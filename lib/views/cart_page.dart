@@ -166,7 +166,7 @@ class _CartPageState extends State<CartPage> {
                                           ElevatedButton(
                                             onPressed: () {
                                               setState(() {
-                                                if (elem['qty'] >= 1 &&
+                                                if (elem['qty'] >= 2 &&
                                                     totalPrice >= 0) {
                                                   elem['qty']--;
                                                   totalPrice -= elem['price'];
